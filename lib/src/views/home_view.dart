@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class HomeView extends StatelessWidget {
+  const HomeView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,8 +20,6 @@ class HomeView extends StatelessWidget {
             children: [
               _buildMenuButton(context, 'Contatos', '/contacts'),
               _buildMenuButton(context, 'Mapas', '/map'),
-              _buildMenuButton(context, 'Extra', '/extra1'),
-              _buildMenuButton(context, 'Extra', '/extra2'),
             ],
           ),
         ],
@@ -31,7 +31,9 @@ class HomeView extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.all(10),
       child: GestureDetector(
-        onTap: () => Navigator.pushNamed(context, route),
+        onTap: () {
+          Navigator.pushNamed(context, route);
+        },
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
           decoration: BoxDecoration(

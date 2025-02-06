@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+
 import '../controllers/auth_controller.dart';
-import 'package:provider/provider.dart';
-import 'dart:io';
 
 class LoginView extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -10,7 +8,23 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authController = Provider.of<AuthController>(context);
+    final authController = AuthController();
+
+    Future<void> onLogin(context) async {
+      bool success = await authController.loginUser(
+          emailController.text, passwordController.text);
+      if (!success) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Erro ao fazer login. Verifique suas credenciais."),
+            ),
+          );
+        }
+      } else {
+        Navigator.pushNamed(context, '/home');
+      }
+    }
 
     return Scaffold(
       body: Padding(
@@ -32,9 +46,7 @@ class LoginView extends StatelessWidget {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                authController.login(
-                    emailController.text, passwordController.text);
-                Navigator.pushNamed(context, '/home');
+                onLogin(context);
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
               child: Text('Entrar', style: TextStyle(color: Colors.white)),
